@@ -41,7 +41,7 @@ class TCKimlik{
      */
     public function __construct($tcIdentificationNo){
 
-        if((int)log($tcIdentificationNo,10)!=10){
+        if((int)log($tcIdentificationNo,10) != 10){
             return false;
         }
 
@@ -74,13 +74,13 @@ class TCKimlik{
     {
         $oddSum = 0;
         $evenSum = 0;
-        if(substr($this->tcIdentificationNo,0,1)==0)
+        if(substr($this->tcIdentificationNo,0,1) == 0)
         {
             return false;
         }
-        for($i=0;$i<=8;$i++)
+        for($i = 0;$i <= 8;$i++)
         {
-            if($i%2==0)
+            if($i % 2 == 0)
             {
                 $oddSum += $this->tcIdentificationNo[$i];
             }
@@ -88,7 +88,7 @@ class TCKimlik{
                 $evenSum += $this->tcIdentificationNo[$i];
             }
         }
-        $tenthDigit = ((($oddSum*7) - $evenSum)+10) % 10;
+        $tenthDigit = ((($oddSum * 7) - $evenSum) + 10) % 10;
         if($tenthDigit!=$this->tcIdentificationNo[9])
         {
             return false;
@@ -96,7 +96,7 @@ class TCKimlik{
 
         $eleventhDigit = ($oddSum + $evenSum + $tenthDigit) % 10;
 
-        if($eleventhDigit!=$this->tcIdentificationNo[10])
+        if($eleventhDigit != $this->tcIdentificationNo[10])
         {
             return false;
         }
@@ -121,7 +121,14 @@ class TCKimlik{
             return false;
         }
         $client = new SoapClient('https://tckimlik.nvi.gov.tr/Service/KPSPublic.asmx?WSDL');
-        $result = $client->TcKimlikNoDogrula(array('TCKimlikNo'=>$this->tcIdentificationNo, 'Ad'=>$this->strtoupperTR($name), 'Soyad'=>$this->strtoupperTR($surname), 'DogumYili'=>$birthYear));
+        $result = $client->TcKimlikNoDogrula(
+            array(
+                'TCKimlikNo'=>$this->tcIdentificationNo,
+                'Ad' => $this->strtoupperTR($name),
+                'Soyad' => $this->strtoupperTR($surname),
+                'DogumYili' => $birthYear
+                ));
+                
         return $result->TCKimlikNoDogrulaResult;
     }
 }
